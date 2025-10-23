@@ -12,7 +12,7 @@ enum Columna(val Valor: Int) {
   case D2 extends Columna(2)
 }
 
-class Posicion(col: Columna, fila: Fila):
+case class Posicion(col: Columna, fila: Fila):
   def x: Int = col.Valor
   def y: Int = fila.Valor
 
