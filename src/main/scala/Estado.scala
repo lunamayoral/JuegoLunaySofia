@@ -1,7 +1,7 @@
 
-case class Estado(pos_liebre:Posicion, pos_sabuesos:Set[Posicion],turno:Jugador):
+case class Estado(liebre:Posicion, sabuesos:Set[Posicion],turno:Jugador):
   def ocupadas: Set[Posicion] =
-    pos_sabuesos ++ Set(pos_liebre)
+    sabuesos ++ Set(liebre)
 
 /* se usa así
 val nuevoEstado: Estado = Estado(
