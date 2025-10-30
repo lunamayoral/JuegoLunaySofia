@@ -1,6 +1,4 @@
-
 trait TableroJuego:
-
   // --- Devuelve las posiciones accesibles desde una posición ---
   def movimientosDesde(p: Posicion): Set[Posicion]
 
@@ -49,12 +47,23 @@ object TableroClasicoLyS extends TableroJuego:
 )
 
   // --- Devuelve las posiciones accesibles desde una posición ---
-  override def movimientosDesde(p: Posicion): Set[Posicion] = adyacencias.getOrElse(p, Set())
+  override def movimientosDesde(p: Posicion): Set[Posicion] = adyacencias(p)
   
   // ---  Posiciones iniciales de la liebre y sabuesos ---
   override def posicionInicialLiebre: Posicion = D2M
   override def posicionesInicialesSabuesos: Set[Posicion] = Set(I1A, I2M, I1B)
   override def posicionMetaLiebre: Posicion = I2M
+
+  // --- Comprueba si ha terminado la partida ---
+  override def esFinPartida(estado: Estado): Option[Jugador] =
+    val ganador =
+      if estado.liebre == posicionMetaLiebre then Some(Jugador.Liebre)
+      else if MovimientoLiebre.movimientosPosibles(this, estado).isEmpty then Some(Jugador.Sabuesos)
+      else None      
+    ganador match
+      case Some(ganador) => Some(ganador)
+      case None => None
+      
 
   // --- Pintado ---
   private def pintarNodo(p: Posicion, estado: Estado): String =
