@@ -1,10 +1,10 @@
 import scala.annotation.tailrec
 
 @tailrec
-def pintarMovimientosPosibles(pos: List[Posicion], i: Int = 0): Unit = pos match
+def pintarMovimientosPosibles(pos: List[(Posicion, Posicion)], i: Int = 0): Unit = pos match
   case Nil => println("")
-  case h :: t =>
-    print(s"[$i] $h  ")
+  case (pos1,pos2) :: t =>
+    print(s"[$i] $pos1 -> $pos2  ")
     pintarMovimientosPosibles(t, i + 1)
 
 @tailrec
@@ -14,9 +14,9 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
   
   //2. Calcular movimiento posible
   val mov_pos = if estado.turno == Jugador.Liebre then
-    MovimientoLiebre.movimientosPosibles(tablero, estado)
+    MovimientoLiebre.movimientosPosiblesLiebre(tablero, estado)
   else
-    MovimientoSabueso.movimientosPosibles(tablero, estado)
+    MovimientoSabueso.movimientosPosiblesPorSabueso(tablero, estado)
     
   //3.mostrar los movimientos posibles
   println(s"Turno de ${estado.turno}: elige posicion a mover. ")
@@ -24,9 +24,9 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
   
   //4.entrada teclado
   println("Introduce el número del movimiento elegido:")
-  //cual sabueso a mover
   val eleccion = scala.io.StdIn.readLine().toInt
-  val destino = mov_pos.toList(eleccion)
+  val origen = mov_pos.toList(eleccion)._1
+  val destino = mov_pos.toList(eleccion)._2
   
   //5.ejecuta movimiento
   val nuevoEstado: Estado = 
@@ -36,7 +36,7 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
       turno = Jugador.Sabuesos)
     else Estado(
       liebre = estado.liebre,
-      sabuesos = estado.sabuesos + destino, //hay que quitar el sabueso elegido
+      sabuesos = estado.sabuesos + destino - origen,
       turno = Jugador.Liebre)
     
   //6.comprobar fin de partida
@@ -47,3 +47,6 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
       ganador
     case None =>
       bucleJuego(tablero, nuevoEstado)
+
+bucleJuego(TableroClasicoLyS, 
+  Estado(TableroClasicoLyS.posicionInicialLiebre,TableroClasicoLyS.posicionesInicialesSabuesos,sortearTurno()))
