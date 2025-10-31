@@ -12,7 +12,7 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
   //1.pintar tablero
   tablero.pintarTablero(estado)
   
-  //2.Calcular movimiento posible
+  //2. Calcular movimiento posible
   val mov_pos = if estado.turno == Jugador.Liebre then
     MovimientoLiebre.movimientosPosibles(tablero, estado)
   else
