@@ -47,6 +47,3 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
       ganador
     case None =>
       bucleJuego(tablero, nuevoEstado)
-
-bucleJuego(TableroClasicoLyS, 
-  Estado(TableroClasicoLyS.posicionInicialLiebre,TableroClasicoLyS.posicionesInicialesSabuesos,sortearTurno()))
