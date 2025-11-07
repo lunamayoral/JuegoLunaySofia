@@ -1,5 +1,16 @@
 import scala.annotation.tailrec
 
+def comprobacionTeclado(max:Int):Int =
+  try {
+    val n = scala.io.StdIn.readLine().toInt
+    if n<max || n>=0 then n else 
+      println("Introduce número de las opciones sugeridas")
+      comprobacionTeclado(max)
+  } catch
+    case e: Throwable =>
+      println("Introduce número de las opciones sugeridas")
+      comprobacionTeclado(max)
+
 @tailrec
 def pintarMovimientosPosibles(pos: List[(Posicion, Posicion)], i: Int = 0): Unit = pos match
   case (pos1,pos2) :: t =>
@@ -42,7 +53,7 @@ def bucleJuego(tablero: TableroJuego, estado: Estado, modoIA: Boolean): Jugador 
   else
     //4.entrada teclado
     println("Introduce el número del movimiento elegido:")
-    val eleccion = scala.io.StdIn.readLine().toInt
+    val eleccion = comprobacionTeclado(mov_pos.toList.length)
     mov_pos.toList(eleccion)
 
     //5.ejecuta movimiento
@@ -83,7 +94,7 @@ def bucleJuego(tablero: TableroJuego, estado: Estado): Jugador =
   
   //4.entrada teclado
   println("Introduce el número del movimiento elegido:")
-  val eleccion = scala.io.StdIn.readLine().toInt
+  val eleccion = comprobacionTeclado(mov_pos.toList.length)
   val origen = mov_pos.toList(eleccion)._1
   val destino = mov_pos.toList(eleccion)._2
   

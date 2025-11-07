@@ -2,7 +2,7 @@ import scala.annotation.tailrec
 
 object prueba extends App:
   println("Hola! Bienvenido al juego de liebre y sabuesos!")
-  println("Quieren jugar? (s/n)")
+  println("Quieren jugar? (s/n)") //si escribe otra cosa, entiendo como que no quiere jugar
   if scala.io.StdIn.readLine() == "s" then
     @tailrec
     def juego(n_partidas:Int, ganancia_liebre:Int, ganancia_sabuesos:Int):Unit=
@@ -11,16 +11,16 @@ object prueba extends App:
       println("[0]: Buen gusto con ver la película de la batalla entre IAs!")
       println("[1]: Épica batalla de tú contra IA!")
       println("[2]: Juega con tu amigo, a disfrutar!")
-      val n_jugador = scala.io.StdIn.readLine().toInt
+      val n_jugador = comprobacionTeclado(3)
       val estado: Estado = Estado(TableroClasicoLyS.posicionInicialLiebre, TableroClasicoLyS.posicionesInicialesSabuesos, sortearTurno())
       val ganador = if n_jugador == 0 
       then bucleJuego(TableroClasicoLyS,estado,true) //modificar
       else if n_jugador == 2 then bucleJuego(TableroClasicoLyS,estado,false)
       else
         println("Qué quieres jugar?")
-        println("[s]: Sabuesos")
-        println("[l]: Liebre")
-        if scala.io.StdIn.readLine()=="s" 
+        println("[0]: Sabuesos")
+        println("[1]: Liebre")
+        if comprobacionTeclado(2) == 0 
         then bucleJuego(TableroClasicoLyS,estado,true) //modificar
         else bucleJuego(TableroClasicoLyS,estado,true)
       println("Se ha acabado el juego!")
