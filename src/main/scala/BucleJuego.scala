@@ -21,38 +21,39 @@ def bucleJuego(tablero: TableroJuego, estado: Estado, modoIA: Boolean): Jugador 
   //3.mostrar los movimientos posibles
   println(s"Turno de ${estado.turno}: elige posicion a mover. ")
   pintarMovimientosPosibles(mov_pos.toList)
-    
-  val destino = if modoIA 
+
+  val destino = if modoIA && estado.turno == Jugador.Liebre
   then
     def mov_liebre_IA(mov_pos:List[(Posicion,Posicion)], mejor:(Posicion,Posicion)):(Posicion,Posicion) = mov_pos match
       case Nil => mejor
-      case h::t => 
+      case h::t =>
         val m1 = MovimientoLiebre.evaluarMovimiento(tablero,estado,h._2)
         val m2 = MovimientoLiebre.evaluarMovimiento(tablero,estado,mejor._2)
         if m1._1 > m2._1
         then mov_liebre_IA(t, h)
-        else if m1._1 == m2._1 then 
-          if m1._2 > m2._2 
-          then mov_liebre_IA(t, h) 
-          else mov_liebre_IA(t, mejor) 
+        else if m1._1 == m2._1 then
+          if m1._2 > m2._2
+          then mov_liebre_IA(t, h)
+          else mov_liebre_IA(t, mejor)
         else mov_liebre_IA(t, mejor)
-    mov_liebre_IA(mov_pos.toList, mov_pos.toList(1))._1
+    val dest = mov_liebre_IA(mov_pos.toList, mov_pos.toList.head)
+    println(s"La IA liebre mueve a ${dest._2}")
+    dest
   else
     //4.entrada teclado
     println("Introduce el número del movimiento elegido:")
     val eleccion = scala.io.StdIn.readLine().toInt
-    val origen = mov_pos.toList(eleccion)._1
-    mov_pos.toList(eleccion)._2
+    mov_pos.toList(eleccion)
 
     //5.ejecuta movimiento
   val nuevoEstado: Estado =
     if estado.turno == Jugador.Liebre then Estado(
-      liebre = destino,
+      liebre = destino._2,
       sabuesos = estado.sabuesos,
       turno = Jugador.Sabuesos)
     else Estado(
       liebre = estado.liebre,
-      sabuesos = estado.sabuesos + destino - origen,
+      sabuesos = estado.sabuesos + destino._2 - destino._1,
       turno = Jugador.Liebre)
 
   //6.comprobar fin de partida
@@ -60,7 +61,7 @@ def bucleJuego(tablero: TableroJuego, estado: Estado, modoIA: Boolean): Jugador 
     case Some(ganador) =>
       tablero.pintarTablero(nuevoEstado)
       println(s"\n¡Partida terminada! Ganador: $ganador")
-      ganador 
+      ganador
     case None =>
         bucleJuego(tablero, nuevoEstado, modoIA)
 
