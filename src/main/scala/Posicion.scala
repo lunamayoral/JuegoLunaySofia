@@ -15,6 +15,7 @@ enum Columna(val Valor: Int) {
 case class Posicion(col: Columna, fila: Fila):
   def x: Int = col.Valor
   def y: Int = fila.Valor
+
   def manhattan(other: Posicion): Int =
-    Math.abs(col.Valor-other.col.Valor) + Math.abs(fila.Valor-other.fila.Valor)
+    Math.abs(col.Valor - other.col.Valor) + Math.abs(fila.Valor - other.fila.Valor)
 

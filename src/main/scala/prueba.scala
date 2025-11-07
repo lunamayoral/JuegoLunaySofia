@@ -14,15 +14,15 @@ object prueba extends App:
       val n_jugador = comprobacionTeclado(3)
       val estado: Estado = Estado(TableroClasicoLyS.posicionInicialLiebre, TableroClasicoLyS.posicionesInicialesSabuesos, sortearTurno())
       val ganador = if n_jugador == 0 
-      then bucleJuego(TableroClasicoLyS,estado,true) //modificar
-      else if n_jugador == 2 then bucleJuego(TableroClasicoLyS,estado,false)
+      then bucleJuego(TableroClasicoLyS,estado, Set(Jugador.Liebre, Jugador.Sabuesos))
+      else if n_jugador == 2 then bucleJuego(TableroClasicoLyS,estado, Set.empty)
       else
         println("Qué quieres jugar?")
         println("[0]: Sabuesos")
         println("[1]: Liebre")
         if comprobacionTeclado(2) == 0 
-        then bucleJuego(TableroClasicoLyS,estado,true) //modificar
-        else bucleJuego(TableroClasicoLyS,estado,true)
+        then bucleJuego(TableroClasicoLyS,estado, Set(Jugador.Liebre))
+        else bucleJuego(TableroClasicoLyS,estado, Set(Jugador.Sabuesos))
       println("Se ha acabado el juego!")
       println("Quieren jugar otra partida? (s/n)")
       if scala.io.StdIn.readLine() == "s" 
